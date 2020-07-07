@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Application</title>
+</head>
+<body>
+    <input type="text" class="main">
+    <button class="btn-prime">fetch</button>
+    <div class="weather">
+        <table class="tbl" style="padding: 20px;">
+            <tr>
+                <td id="temp"></td>
+                <td class="img"></td>
+            </tr>
+        </table>
+        <button class="toggle" style="display: none;">Toggle Scale</button>
+    </div>
+
+</body>
+<script>
+    celsius = 0;
+    document.querySelector('.btn-prime').onclick = function () {
+        let xhr = new XMLHttpRequest();
+        let access_key = "fecc9f824331849e23307ccc6fac6c85";
+        let query = document.querySelector('.main').value;
+        // let query = "new york"
+        let units = 'm';
+        xhr.open('GET', 'http://api.weatherstack.com/current?access_key=' 
+        + access_key + '&query=' 
+        + query + '&units='
+        + units);
+
+        xhr.send();
+
+        xhr.onload = function() {
+            if (xhr.status != 200) { // HTTP error?
+                // handle error
+                alert( 'Error: ' + xhr.status);
+                return;
+            }
+
+            var resp = JSON.parse(xhr.response);
+            // alert(resp["request"]);
+            let prt = document.querySelector('.weather');
+            var p = document.createElement("p");
+            document.querySelector('.toggle').style.display = "block";
+            td = document.querySelector('#temp');
+            td.innerHTML = resp["current"]["temperature"] + " degree C";
+            celsius = td.innerHTML;
+            prt.appendChild(p);
+            // var btn = document.createElement("button");
+            // btn.class = "btn-degree";
+            // btn.textContent = "Toggle Scale"
+            // prt.appendChild(btn);
+            td2 = document.querySelector('.img');
+            var img = document.createElement("img");
+            img.src = resp["current"]["weather_icons"][0];
+            if(td2.hasChildNodes())
+                td2.removeChild(td2.firstChild);
+            td2.appendChild(img);
+        };
+
+    };
+    document.querySelector('.toggle').onclick = function(){
+        td = document.querySelector('#temp').innerHTML;
+        temp = td.split(' ')[0];
+        final = "";
+        if(td.split(' ')[2] == 'C'){
+            temp_f = (9/5*parseInt(temp)) + 32;
+            final = temp_f.toString() + ' ' + "degree F";
+        }
+        else{
+            final = celsius;
+        }
+        document.querySelector('#temp').innerHTML = final;
+    
+    }
+</script>
+</html>
