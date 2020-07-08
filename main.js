@@ -104,8 +104,7 @@ document.querySelector('.btn-prime').onclick = function () {
         tr.appendChild(td_loc);
         tr.appendChild(td_time);
         tr.appendChild(td_weath);
-        if(tr_count == 1)
-            fun();
+        fun();
         if(tr_count >= 1){
             var btn_clear = document.querySelector('.clear');
             btn_clear.style.display = 'block';
