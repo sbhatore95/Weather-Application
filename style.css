@@ -1,0 +1,28 @@
+.container{
+    margin-left: 50%;
+    transform: translate(-50%, 0);
+}
+
+input {
+    width: 50%;
+    height: 40px;
+    border-left: solid black;
+    border-width: 1px;
+}
+
+.btn-prime{
+    height: 40px;
+    width: 80px;
+}
+
+#td-1{
+    width: 100px;
+}
+
+#td-2{
+    width: 100px;
+}
+
+#td-3{
+    width: 100px;
+}

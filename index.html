@@ -4,38 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Application</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <input type="text" class="main">
-    <button class="btn-prime">fetch</button>
-    <div class="weather">
-        <table class="tbl" style="padding: 20px;">
-            <tr>
-                <td id="temp"></td>
-                <td class="img"></td>
-            </tr>
-        </table>
-        <button class="toggle" style="display: none;">Toggle Scale</button>
-    </div>
-    <div class="recent">
-        <h2>Recently Searched Locations</h2>
-        <table class="recent-table">
-            <tr>
-                <td>Location</td>
-                <td>Timestamp</td>
-                <td>Weather</td>
-            </tr>
-        </table>
+    <div class="container">
+        <input type="text" class="main">
+        <button class="btn-prime">fetch</button>
+        <div class="weather">
+            <table class="tbl" style="padding: 40px;">
+                <tr>
+                    <td id="temp"></td>
+                    <td style="width: 30px;"></td>
+                    <td class="img"></td>
+                </tr>
+            </table>
+            <button class="toggle" style="display: none;">Toggle Scale</button>
+        </div>
+        <div class="recent">
+            <h2>Recently Searched Locations</h2>
+            <table class="recent-table">
+            </table>
+            <button class="clear" style="display:none">Clear</button>
+        </div>
     </div>
 </body>
 <script>
     celsius = 0;
-    tr_count = 1;
+    tr_count = 0;
     document.querySelector('.btn-prime').onclick = function () {
+        // forming xhr request
         let xhr = new XMLHttpRequest();
         let access_key = "fecc9f824331849e23307ccc6fac6c85";
-        // let query = document.querySelector('.main').value;
-        let query = "new york"
+        let query = document.querySelector('.main').value;
+        // let query = "new york"
         let units = 'm';
         xhr.open('GET', 'http://api.weatherstack.com/current?access_key=' 
         + access_key + '&query=' 
@@ -75,6 +76,21 @@
                 Below code creates new row inside the recent history table.
             */
             var rec_tab = document.querySelector('.recent-table'); // fetching recent table
+            // create heading of the table if no rows
+            if (tr_count == 0){
+                var tr_1 = document.createElement('tr');
+                var td_1 = document.createElement('td');
+                var td_2 = document.createElement('td');
+                var td_3 = document.createElement('td');
+                td_1.innerText = 'Location';
+                td_2.innerText = 'Timestamp';
+                td_3.innerText = 'Weather';
+                rec_tab.appendChild(tr_1);
+                tr_1.appendChild(td_1);
+                tr_1.appendChild(td_2);
+                tr_1.appendChild(td_3);
+                tr_count += 1;
+            }
             // Create tr and td elements
             var tr = document.createElement('tr');
             var td_loc = document.createElement('td');
@@ -102,6 +118,10 @@
             tr.appendChild(td_loc);
             tr.appendChild(td_time);
             tr.appendChild(td_weath);
+            if(tr_count == 2){
+                var btn_clear = document.querySelector('.clear');
+                btn_clear.style.display = 'block';
+            }
         };
     };
     document.querySelector('.toggle').onclick = function(){
@@ -117,6 +137,15 @@
         }
         document.querySelector('#temp').innerHTML = final;
     
+    }
+    document.querySelector('.clear').onclick = function(){
+        var tbl = document.querySelector('.recent-table');
+        var tbl_childs = tbl.childNodes;
+        while(tr_count > 0){
+            tbl.removeChild(tbl_childs[tr_count]);
+            tr_count -= 1;
+        }
+        document.querySelector('.clear').style.display = 'none';
     }
 </script>
 </html>
