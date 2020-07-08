@@ -6,31 +6,11 @@ window.onload = function (){
     if(tr_count === NaN)
         tr_count = 0;
     let item = localStorage.getItem("item");
-    if(item != "null" && item != "undefined"){
+    if(item != null && item != "null"){
         console.log('hey')
         let tbl = document.querySelector('.recent');
         tbl.innerHTML = JSON.parse(item);
-    }
-    document.querySelector('.clear').onclick = function(){
-        console.log("this is clear");
-        let header = document.querySelector('.header');
-        let tbl = document.querySelector('.recent-table');
-        header.innerHTML = "";
-        tbl.innerHTML = "";
-        // console.log(tbl);
-        // header.innerHTML = "";
-        // var tbl_childs = tbl.childNodes;
-        // while(tr_count != 0){
-        //     console.log(tr_count);
-        //     console.log(tbl_childs);
-        //     tbl.removeChild(tbl_childs[tr_count-1]);
-        //     tr_count -= 1;
-        //     localStorage.setItem("tr_count", (tr_count-1).toString());
-        // }
-        document.querySelector('.clear').style.display = 'none';
-        localStorage.setItem("item", undefined);
-        localStorage.setItem("tr_count", "0");
-        tr_count = 0;
+        fun();
     }
 }
 document.querySelector('.btn-prime').onclick = function () {
@@ -124,6 +104,8 @@ document.querySelector('.btn-prime').onclick = function () {
         tr.appendChild(td_loc);
         tr.appendChild(td_time);
         tr.appendChild(td_weath);
+        if(tr_count == 1)
+            fun();
         if(tr_count >= 1){
             var btn_clear = document.querySelector('.clear');
             btn_clear.style.display = 'block';
@@ -140,6 +122,7 @@ document.querySelector('.btn-prime').onclick = function () {
     }
 };
 
+
 document.querySelector('.toggle').onclick = function(){
     td = document.querySelector('#temp').innerHTML;
     temp = td.split(' ')[0];
@@ -153,4 +136,18 @@ document.querySelector('.toggle').onclick = function(){
     }
     document.querySelector('#temp').innerHTML = final;
 
+}
+
+function fun(){
+    document.querySelector('.clear').onclick = function(){
+        console.log("this is clear");
+        let header = document.querySelector('.header');
+        let tbl = document.querySelector('.recent-table');
+        header.innerHTML = "";
+        tbl.innerHTML = "";
+        document.querySelector('.clear').style.display = 'none';
+        localStorage.setItem("item", null);
+        localStorage.setItem("tr_count", "0");
+        tr_count = 0;
+    }
 }
